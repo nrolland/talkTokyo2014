@@ -43,6 +43,11 @@
     <Compile Include="03-universal.fs" />
     <Compile Include="04-existentials.fs" />
     <Compile Include="Stack.fs" />
+    <Compile Include="05-existentials-simpler.fs" />
+    <Compile Include="04-existentials-full.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
+  <ItemGroup>
+    <None Include="01-IEnumerable.cs" />
+  </ItemGroup>
 </Project>

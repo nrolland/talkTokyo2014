@@ -96,6 +96,8 @@
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{verbatim}
 \usepackage{minted}
+\usepackage{xcolor}
+\usepackage{color}
 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{xcolor}% http://ctan.org/pkg/xcolor
@@ -279,7 +281,7 @@ Resumable computation !
 
 \begin{frame}
 \frametitle{OO way}
-%//todo insert interfaces etc here
+\inputminted{csharp}{01-IEnumerable.cs}
 \end{frame}
 
 
@@ -306,62 +308,118 @@ A type is a \textbf{computable specification}
 \end{itemize}
 \end{frame}
 
-
-
 \section{ Universals, programming against the interface and existentials}
 
 \subsection{universals }
 \begin{frame}[fragile]
-\frametitle{universals}
+\frametitle{Universals}
 \begin{center}
 \begin{minipage}{9cm}
 \begin{varblock}[9cm]{Type}
-\inputminted[mathescape,
-               numbersep=5pt,
-                fontsize=\scriptsize]{fsharp}{03-universal.fs}
+\inputminted[fontsize=\scriptsize]{fsharp}{03-universal.fs}
 \end{varblock}
 \end{minipage}
 \end{center}
 \begin{itemize}
-\item What is the type of $empty $  ?
-\pause
- $$empty : \forall T . \,\left( \right) \rightarrow List<T> $$
-\item "I don't need to know anything about the type to do my job, I'll only refer to it opaquely as T"
-\item $List$  implementation \textbf{can not} know anything about the type
+\item What is the type of  $empty $ \pause   ? $$empty : \forall T . \,\left( \right) \rightarrow List<T> $$
 \end{itemize}
 \end{frame}
 
-\subsection{L in SOLID  } 
+\begin{frame}[fragile]
+\begin{itemize}
+\frametitle{Universals}
+\item What is the type of  $empty $  ? $empty : \forall T . \,\left( \right) \rightarrow List<T> $
+\item "I don't need to know anything about the type to do my job, \textbf{I} will only refer to it \textbf{opaquely} as T"
+
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}[4cm]{ implementer}
+does not know $T$
+\end{varblock}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}[4cm]{ user}
+provide the type T
+\end{varblock}
+\end{minipage}
+\end{itemize}
+\end{frame}
+
+\subsection{sounds like "L" in SOLID .. } 
 
 \begin{frame}
 \inputminted[mathescape,
-               numbersep=5pt,
-               frame=lines,
-                fontsize=\scriptsize]{fsharp}{02-liskov.fs}
+                     numbersep=5pt,
+                     fontsize=\scriptsize]{fsharp}{02-liskov.fs}
 \frametitle{Liskov substitution "principle" - Program to interface}
 
 \end{frame}
 
+\begin{frame}
+For an interface
+
+\begin{minipage}[t]{0.5\linewidth}
+\begin{varblock}[5.1cm]{ implementer}
+Know about the specific type $T$     
+\end{varblock}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}[6cm]{ user}
+does not know about the specific type T, only about the interface
+\end{varblock}
+\end{minipage}
+\end{frame}
 
 \subsection{existentials} 
 
 
-%we flip the quantification. simple, dual
-
+\begin{frame}[fragile]
+\frametitle{Existentials}
+\begin{itemize} 
+\item Interfaces is OO abstraction.But relation not clear with Universals, although they seem to do related thing
+\item Functional is Mathematics ! So Abstraction in FP has to be mathematical and related to universals ! Universals definition
+  $$empty : \forall T . \,\left( \right) \rightarrow List<T> $$
+   suggests "existentials" 
+  \begin{align*}
+	  absStack : \exists T \{ &empty :\left( \right)\rightarrow T   \\
+	  									  &push : int*T \rightarrow T \\
+	  									  &pop  : T \rightarrow T \\
+  	  									  &top :  T \rightarrow int  \}
+  \end{align*}
+ \item " I'll use whatever type I want here; you wont know anything about the type, so \textbf{you} can only refer to it \textbf{opaquely} as X"
+\end{itemize}
+\end{frame}
 
 \begin{frame}
-\fboxsep=0pt
-\noindent
-\begin{minipage}[]{0.48\linewidth}
-left part
+\begin{align*}
+	  absStack : \exists T \{ &empty :\left( \right)\rightarrow T   \\
+	  									  &push : int*T \rightarrow T \\
+	  									  &pop  : T \rightarrow T \\
+  	  									  &top :  T \rightarrow int  \}
+  \end{align*}
+  
+  \begin{minipage}[t]{0.5\linewidth}
+\begin{varblock}[5.1cm]{ implementer}
+Know about the specific type $T$     
+\end{varblock}
 \end{minipage}
 \hfill%
-\fbox{%
 \begin{minipage}[t]{0.48\linewidth}
-right part
+\begin{varblock}[6cm]{ user}
+does not know about the specific type T, only about the interface
+\end{varblock}
 \end{minipage}
-}
+\end{frame}  
+
+\begin{frame}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{04-existentials.fs}
 \end{frame}
+\begin{frame}
+For an interface
+\end{frame}
+
+
 
 \section{Prototyping the functional way}
 
