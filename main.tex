@@ -399,7 +399,7 @@ does not know about the specific type T, only about the interface
   	  									  &top :  T \rightarrow int  \}
   \end{align*}
   
-  \begin{minipage}[t]{0.5\linewidth}
+ \begin{minipage}[t]{0.5\linewidth}
 \begin{varblock}[5.1cm]{ implementer}
 Know about the specific type $T$     
 \end{varblock}
@@ -433,7 +433,96 @@ For an interface
 % One can compute probability distribution //type
 % One can compute a parser //what is the type ?
 
-\subsection{parsec}
+\subsection{Parser combinator}
+
+\begin{frame}
+\frametitle{How do we go from here to there ?}
+
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}[5cm]{ string}
+"[a number is like 1234 but can also be 9.12 ]"
+\end{varblock}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}[6cm]{ value }
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{08-parsedvalue.fs}
+\end{varblock}
+\end{minipage}
+\pause
+
+This is a job for .....
+\pause
+grep ?
+\pause
+imperative ?
+\pause
+or...
+\pause
+\resizebox{1.75cm}{!}{$\lambda$ !} 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{lambda man }
+\includegraphics[height=8cm,width=12cm]{lambda-man.jpg}
+\end{frame}
+
+\begin{frame}
+\frametitle{start with the types}
+\pause
+\begin{minipage}[t]{0.48\linewidth}
+\begin{varblock}{value type}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{07-parservalue.fs}
+\end{varblock}
+\end{minipage}
+\hfill%
+\begin{minipage}[t]{0.52\linewidth}
+\begin{varblock}{ parser return type}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{08-parsedvalue.fs}
+\end{varblock}
+\end{minipage}
+
+\pause
+
+\end{frame}
+\begin{varblock}{ parser return type}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectype.fs}
+\end{varblock}
+
+\begin{frame}
+\resizebox{2cm}{!}{"9.12 "} 
+\begin{itemize}
+\item 9 is a number
+\item but if we say so, what do we do for ".12" ?
+\item the success of a parser depends on the rest of the string, not the first character
+\end{itemize}
+If it matters, it should be part of the returned type of a parser  !
+\pause
+\begin{varblock}{ parser return type}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectypecomplete.fs}
+\end{varblock}
+\end{frame}
+
+\begin{frame}
+
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectype.fs}
+\begin{varblock}{ reading the parser type}
+
+\begin{itemize} 
+\item we start with  a list of token, the first n representing a $Val$ and the rest representing some other values
+\item The parser's job is to give us back that $Val$ along with the "rest", assuming this VAL is emitted from the original input
+\item the notion of "rest" is \textbf{dependent} on the $Val$ produced, this is why we include it in $ParseReturn$
+\end{itemize}
+\end{varblock}
+\end{frame}
+
+\begin{frame}
+\frametitle{define simple block}
+\end{frame}
+
+
+
 \subsection{pickler combinator}
 
 

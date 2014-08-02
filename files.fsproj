@@ -45,6 +45,11 @@
     <Compile Include="Stack.fs" />
     <Compile Include="05-existentials-simpler.fs" />
     <Compile Include="04-existentials-full.fs" />
+    <Compile Include="06-parsectype.fs" />
+    <Compile Include="07-parservalue.fs" />
+    <Compile Include="08-parsedvalue.fs" />
+    <Compile Include="09-simpleblocks.fs" />
+    <Compile Include="06-parsectypecomplete.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
