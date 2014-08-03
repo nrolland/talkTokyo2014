@@ -98,6 +98,7 @@
 \usepackage{minted}
 \usepackage{xcolor}
 \usepackage{color}
+\usepackage{CJK}
 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{xcolor}% http://ctan.org/pkg/xcolor
@@ -133,7 +134,7 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Functional prototyping]{Functional thinking, a universal tool for the digital world } % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Functional prototyping]{Functional thinking, a \textbf{universal} tool for the digital world } % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author{Nicolas Rolland} % Your name
 \institute[] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -149,7 +150,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+\frametitle{Table of Contents} % Table of contents slide, comment this block out to remove it
 \tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
 \end{frame}
 
@@ -166,7 +167,7 @@
 \begin{frame}
 \frametitle{Types}
 \begin{itemize}
-\item What is a type and why do we need to think of it ?
+\item What is a type ?
 \pause
 \begin{center}
 \begin{minipage}{5cm}
@@ -176,22 +177,38 @@ A type is a set of values.
 \end{minipage}
 \end{center}
 \pause
-\item restriction allows correctness - The computer tell us the errors
-\item restriction tells readers a specification - We can communicate to other people
+\end{itemize}
+why do we need to think of it in typed functional programming ? 
+\begin{itemize}
+\item a value is a value  e.g. $1$
+\pause
+\item a \textbf{function} is a value too ! 
+\inputminted[fontsize=\scriptsize]{fsharp}{00-functionasvalue.fs}
+\pause
+\item hence everything is a value, \textbf{everything} has a type !
 \end{itemize}
 
-NB :
+\end{frame}
+\begin{frame}
+\frametitle{Using types}
+\begin{itemize}
+\pause
+\item by restriction we get correctness - The computer tells us the errors
+\pause
+\item restriction tells readers a specification - We can communicate to other people
+\end{itemize}
+\pause
 \begin{itemize}
 \item Types should be helping you, not get in your way.
 \item  \textbf{No need to write} the types in F\#. Less work AND more security !
-\item You might want to type some for the purpose of communication with others
+\item You can write the types for the purpose of communication with others
 \end{itemize}
 \end{frame}
 
 \subsection{Warm-up exercices}
 
 \begin{frame}
-\frametitle{what does this type do ?}
+\frametitle{what can I do with a value of this type ?}
 \begin{center}
 \begin{minipage}{5cm}
 \begin{varblock}[4cm]{Type1}
@@ -200,39 +217,63 @@ $$\left( \right) \longrightarrow T$$
 \end{minipage}
 \end{center}
 \pause
-lazy values !
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\inputminted{fsharp}{10-delayexample.fs}
 
+\pause
+lazy values !
+\pause
+\inputminted{fsharp}{11-delayexample.fs}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\pause
 \column{.45\textwidth} % Left column and width
-\begin{eqnarray*}
-\mbox {let  delay  x} &&= fun \left( \right) \rightarrow x   \\
-\mbox {let  force  f} &&= f   \left( \right)       
-\end{eqnarray*}
+\begin{align*}
+\mbox {let  delay  x} &= fun \left( \right) \rightarrow x  &&: T  \rightarrow \left( \left( \right)  \rightarrow T \right)   \\
+\mbox {let  force  f} &= f   \left( \right)   &&: \left( \left( \right)  \rightarrow T \right)  \rightarrow T      
+\end{align*}
 
 \column{.5\textwidth} % Right column and width
 \begin{eqnarray*}
-delay &&: T  \rightarrow \left( \left( \right)  \rightarrow T \right)  \\
-force  &&: \left( \left( \right)  \rightarrow T \right)  \rightarrow T   
+\mbox{delay force } &&=  Id_{  \left( \right)  \rightarrow T  } \\
+\mbox{force delay } &&= Id_{  T } 
 \end{eqnarray*}
 \end{columns}
 
-\begin{eqnarray}
-\mbox{delay force } &&=  Id_{  \left( \right)  \rightarrow T  } \\
-\mbox{force delay } &&= Id_{  T } 
-\end{eqnarray}
+
 $$  T  \cong  \left( \right)  \rightarrow T   $$
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{what can I do with a value of this type ?}
+\begin{center}
+\begin{minipage}{5cm}
+\begin{varblock}[10cm]{Type2}
+
+\begin{eqnarray*}
+\mbox {type Type2}<T> = && \vert\,  \mbox{Case1 of }  \left(  T * Type2<T> \right)    \\
+									 && \vert \, \mbox{Case0  }       
+\end{eqnarray*}
+
+\end{varblock}
+\end{minipage}
+\end{center}
+\pause
+
+\pause
+This is a list !
+
 
 \end{frame}
 
 
 
 
-
 \begin{frame}
-\frametitle{what does this type do ?}
+\frametitle{what can I do with a value of this type ?}
 \begin{center}
 \begin{minipage}{5cm}
-\begin{varblock}[10cm]{Type1}
+\begin{varblock}[10cm]{Type3}
 
 \begin{eqnarray*}
 \mbox {type RComp}<T> = && \vert\,  \mbox{NotYet of }  \left(  \left( \right)  \rightarrow RComp<T> \right)    \\
@@ -254,7 +295,7 @@ Resumable computation !
 
 \begin{frame}
 \frametitle{can you recognize IEnumerable and IObservable ?}
-
+\pause
 \begin{center}
 \begin{minipage}{5cm}
 \begin{varblock}[10cm]{IEnumerable}
@@ -267,7 +308,15 @@ Resumable computation !
 \end{varblock}
 \end{minipage}
 \end{center}
-\pause
+\end{frame}
+
+\begin{frame}
+\frametitle{Object Oriented way}
+%from http://referencesource.microsoft.com/
+\inputminted{csharp}{01-IEnumerable.cs}
+\end{frame}
+
+\begin{frame}
 \begin{center}
 \begin{minipage}{5cm}
 \begin{varblock}[10cm]{IObservable / Reactive}
@@ -277,14 +326,18 @@ Resumable computation !
 \end{varblock}
 \end{minipage}
 \end{center}
+\begin{center}
+\begin{minipage}{5cm}
+
+\pause
+\begin{varblock}[10cm]{IEnumerable}
+\begin{align*}
+&\mbox {type IEnumerable}<T> &&=  	\left( \right)  \rightarrow \left(\left( \right) \rightarrow \mbox{Item of } T   \right)   
+\end{align*}
+\end{varblock}
+\end{minipage}
+\end{center}
 \end{frame}
-
-\begin{frame}
-\frametitle{OO way}
-\inputminted{csharp}{01-IEnumerable.cs}
-\end{frame}
-
-
 
 
 
@@ -304,7 +357,7 @@ A type is a \textbf{computable specification}
 \pause
 \end{itemize}
 \begin{itemize}
-\item DDD : the architecture \textbf{is} the code
+\item Domain Driven Design : the architecture \textbf{is} the code
 \end{itemize}
 \end{frame}
 
@@ -321,24 +374,26 @@ A type is a \textbf{computable specification}
 \end{minipage}
 \end{center}
 \begin{itemize}
-\item What is the type of  $empty $ \pause   ? $$empty : \forall T . \,\left( \right) \rightarrow List<T> $$
+\item What is the type of  $Empty $ \pause   ? $$Empty : \forall T . \, List<T> $$
+\item What is the type of  $Cons $ \pause   ? $$Cons : \forall T . \, T* List<T> \rightarrow List<T> $$
+
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
 \begin{itemize}
 \frametitle{Universals}
-\item What is the type of  $empty $  ? $empty : \forall T . \,\left( \right) \rightarrow List<T> $
+\item What is the type of  $Empty $  ? $Empty : \forall T . \, List<T> $
 \item "I don't need to know anything about the type to do my job, \textbf{I} will only refer to it \textbf{opaquely} as T"
 
 \begin{minipage}[t]{0.48\linewidth}
-\begin{varblock}[4cm]{ implementer}
+\begin{varblock}[5cm]{ implementer of $List<T>$}
 does not know $T$
 \end{varblock}
 \end{minipage}
 \hfill%
 \begin{minipage}[t]{0.48\linewidth}
-\begin{varblock}[4cm]{ user}
+\begin{varblock}[5cm]{ user of $List<T>$}
 provide the type T
 \end{varblock}
 \end{minipage}
@@ -356,8 +411,7 @@ provide the type T
 \end{frame}
 
 \begin{frame}
-For an interface
-
+\cite{cw1}
 \begin{minipage}[t]{0.5\linewidth}
 \begin{varblock}[5.1cm]{ implementer}
 Know about the specific type $T$     
@@ -464,7 +518,7 @@ or...
 \end{frame}
 
 \begin{frame}
-\frametitle{lambda man }
+\frametitle{スパ lambda man ! }
 \includegraphics[height=8cm,width=12cm]{lambda-man.jpg}
 \end{frame}
 
@@ -478,7 +532,7 @@ or...
 \end{minipage}
 \hfill%
 \begin{minipage}[t]{0.52\linewidth}
-\begin{varblock}{ parser return type}
+\begin{varblock}{ value}
 \inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{08-parsedvalue.fs}
 \end{varblock}
 \end{minipage}
@@ -486,183 +540,60 @@ or...
 \pause
 
 \end{frame}
-\begin{varblock}{ parser return type}
+\begin{frame}
+\begin{varblock}{ parser return type - first try}
 \inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectype.fs}
 \end{varblock}
 
-\begin{frame}
-\resizebox{2cm}{!}{"9.12 "} 
-\begin{itemize}
-\item 9 is a number
-\item but if we say so, what do we do for ".12" ?
-\item the success of a parser depends on the rest of the string, not the first character
-\end{itemize}
-If it matters, it should be part of the returned type of a parser  !
 \pause
-\begin{varblock}{ parser return type}
-\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectypecomplete.fs}
-\end{varblock}
-\end{frame}
 
-\begin{frame}
-
-\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectype.fs}
 \begin{varblock}{ reading the parser type}
 
 \begin{itemize} 
-\item we start with  a list of token, the first n representing a $Val$ and the rest representing some other values
-\item The parser's job is to give us back that $Val$ along with the "rest", assuming this VAL is emitted from the original input
-\item the notion of "rest" is \textbf{dependent} on the $Val$ produced, this is why we include it in $ParseReturn$
+\item a parser takes a list of token  in
+\item it returns a ParserReturn , and the tokens not yet processed
+\pause
+\item a ParserReturn is the value represented by the token consumed 
+\end{itemize}
+\end{varblock}
+
+Ok, but........ "9.12 " : 
+\begin{itemize}
+\item 9 is a number.. but if we recognize "9" as 9 only, what do we do for ".12" ?
+\item $\implies $ the return of a parser depends also on the rest of the string
+\end{itemize}
+If it matters, it should be part of the returned type of a parser  !
+\end{frame}
+\begin{frame}
+\begin{varblock}{ parser return type}
+\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectypecomplete.fs}
+\end{varblock}
+
+\begin{varblock}{ reading the parser type}
+
+\begin{itemize} 
+\item If this is a success, then here is the value along with the rest
+\item The notion of what is the "rest" is \textbf{dependent} on the $Val$ produced
+\item $ParseReturn$ now contains a coherent and actionable unit of information
 \end{itemize}
 \end{varblock}
 \end{frame}
 
 \begin{frame}
-\frametitle{define simple block}
+\frametitle{demo time}
 \end{frame}
 
-
-
-\subsection{pickler combinator}
-
-
-
-
-\begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
-
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Bullet Points}
-\begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
-\end{frame}
-
-%------------------------------------------------
-\section{Second Section}
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-
-\end{verbatim}
-\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
-
-%------------------------------------------------
 
 \begin{frame}
 \frametitle{References}
 \footnotesize{
 \begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
+\bibitem[Cardelli, 1987]{cw1} Luca Cardelli, Peter Wegner (1985)
+\newblock On Understanding Types, Data Abstraction, and Polymorphism
 \end{thebibliography}
 }
 \end{frame}
 
-%------------------------------------------------
 
 \begin{frame}
 \Huge{\centerline{The End}}

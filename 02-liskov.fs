@@ -16,4 +16,4 @@ type Basket(curProv:ICurrencyQuoteProvider) =
     member this.getTotalIn cur = this.getTotalJPY () * curProv.getQuote cur
 
 let testBasket = Basket(TestQuoteProvider())
-let prodBasket = Basket(TestQuoteProvider())
+let prodBasket = Basket(BloombergCurrencyQuoteProvider(...))

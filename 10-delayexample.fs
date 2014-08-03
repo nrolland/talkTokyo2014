@@ -1,0 +1,1 @@
+﻿let a = (fun () -> 3) : unit -> int
