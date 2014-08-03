@@ -1,0 +1,1 @@
+﻿let a = Case1(1,Case1(2,Case1(3,Case0)))

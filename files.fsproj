@@ -50,9 +50,16 @@
     <Compile Include="08-parsedvalue.fs" />
     <Compile Include="09-simpleblocks.fs" />
     <Compile Include="06-parsectypecomplete.fs" />
+    <Compile Include="00-functionasvalue.fs" />
+    <Compile Include="10-delayexample.fs" />
+    <Compile Include="11-delayexample.fs" />
+    <Compile Include="13-listexample.fs" />
+    <Compile Include="14-listexampleUse.fs" />
+    <Compile Include="15-resumableExample.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
     <None Include="01-IEnumerable.cs" />
+    <None Include="12-IObservable.cs" />
   </ItemGroup>
 </Project>

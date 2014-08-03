@@ -6,7 +6,6 @@ type StackOps<'Rep> = {
        pop     :'Rep -> 'Rep
        top     :'Rep ->  int
     }
-
 // $ \exists t. Stack(t) $ 
 [<AbstractClass>]
 type ExistentialStack()=

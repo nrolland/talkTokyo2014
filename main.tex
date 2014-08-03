@@ -98,7 +98,6 @@
 \usepackage{minted}
 \usepackage{xcolor}
 \usepackage{color}
-\usepackage{CJK}
 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{xcolor}% http://ctan.org/pkg/xcolor
@@ -144,6 +143,8 @@
 \date{\today} % Date, can be changed to a custom date
 
 \begin{document}
+
+
 
 \begin{frame}
 \titlepage % Print the title page as the first slide
@@ -205,6 +206,11 @@ why do we need to think of it in typed functional programming ?
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\frametitle{Warm-up exercices }
+\includegraphics[height=5cm,width=12cm]{image002.png}
+\end{frame}
+
 \subsection{Warm-up exercices}
 
 \begin{frame}
@@ -223,14 +229,18 @@ $$\left( \right) \longrightarrow T$$
 lazy values !
 \pause
 \inputminted{fsharp}{11-delayexample.fs}
+
+$$  T  \cong  \left( \right)  \rightarrow T   $$
+
 \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 \pause
+
+
 \column{.45\textwidth} % Left column and width
 \begin{align*}
 \mbox {let  delay  x} &= fun \left( \right) \rightarrow x  &&: T  \rightarrow \left( \left( \right)  \rightarrow T \right)   \\
 \mbox {let  force  f} &= f   \left( \right)   &&: \left( \left( \right)  \rightarrow T \right)  \rightarrow T      
 \end{align*}
-
 \column{.5\textwidth} % Right column and width
 \begin{eqnarray*}
 \mbox{delay force } &&=  Id_{  \left( \right)  \rightarrow T  } \\
@@ -238,8 +248,6 @@ lazy values !
 \end{eqnarray*}
 \end{columns}
 
-
-$$  T  \cong  \left( \right)  \rightarrow T   $$
 
 \end{frame}
 
@@ -259,14 +267,13 @@ $$  T  \cong  \left( \right)  \rightarrow T   $$
 \end{minipage}
 \end{center}
 \pause
-
+\inputminted{fsharp}{13-listexample.fs}
 \pause
 This is a list !
+\inputminted{fsharp}{14-listexampleUse.fs}
 
 
 \end{frame}
-
-
 
 
 \begin{frame}
@@ -284,26 +291,37 @@ This is a list !
 \end{minipage}
 \end{center}
 \pause
+\inputminted{fsharp}{15-resumableExample.fs}
+\pause
 Resumable computation !
 
 
 \end{frame}
 
-
 \subsection{IEnumerable and IObservable} % types make it readable and simple
 
 
 \begin{frame}
-\frametitle{can you recognize IEnumerable and IObservable ?}
+\frametitle{can you recognize IEnumerable ?}
+What is a value of type IEnumerable ?
+\pause
+ a sequence of items
+
+\pause
+\begin{center}
+\begin{minipage}{5cm}
+\begin{varblock}[10cm]{Item}
+\begin{align*}
+&\mbox{type Item of } T  &&= 		 \vert\, \mbox{Finished }   \vert\, \mbox{Value of } T 		 				\end{align*}
+\end{varblock}
+\end{minipage}
+\end{center}
 \pause
 \begin{center}
 \begin{minipage}{5cm}
 \begin{varblock}[10cm]{IEnumerable}
-
-
 \begin{align*}
-&\mbox {type IEnumerable}<T> &&=  	\left( \right)  \rightarrow \left(\left( \right) \rightarrow \mbox{Item of } T   \right)     \\
-&\mbox{type Item of } T  &&= 		 \vert\, \mbox{Finished }   \vert\, \mbox{Value of } T 		 							 
+&\mbox {type IEnumerable}<T> &&=  	\left( \right)  \rightarrow \left(\left( \right) \rightarrow \mbox{Item of } T   \right)     
 \end{align*}
 \end{varblock}
 \end{minipage}
@@ -313,7 +331,20 @@ Resumable computation !
 \begin{frame}
 \frametitle{Object Oriented way}
 %from http://referencesource.microsoft.com/
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\pause
+
+
+\column{.45\textwidth} % Left column and width
 \inputminted{csharp}{01-IEnumerable.cs}
+\column{.5\textwidth} % Right column and width
+\begin{itemize}
+\item How can I read the protocol ?
+\item Should I call MoveNext first ?
+\item What is the value of current after enumeration is finished ?
+\item How can I make sure current is not used after enumeration is finished ?
+\end{itemize}
+\end{columns}
 \end{frame}
 
 \begin{frame}
@@ -321,7 +352,7 @@ Resumable computation !
 \begin{minipage}{5cm}
 \begin{varblock}[10cm]{IObservable / Reactive}
 \begin{align*}
-&\mbox {type IObservable}<T> &&=  \left(\mbox{Item of } T \rightarrow \left( \right)   \right)  \rightarrow  	\left( \right)    \\
+&\mbox {type IObservable}<T> &&=  \left(\mbox{Item of } T \rightarrow \left( \right)   \right)  \rightarrow  	\left( \right)    
 \end{align*}
 \end{varblock}
 \end{minipage}
@@ -337,6 +368,11 @@ Resumable computation !
 \end{varblock}
 \end{minipage}
 \end{center}
+\begin{itemize}
+\item Don't they look similar .... ? 
+\pause
+\item why ?
+\end{itemize}
 \end{frame}
 
 
@@ -359,6 +395,12 @@ A type is a \textbf{computable specification}
 \begin{itemize}
 \item Domain Driven Design : the architecture \textbf{is} the code
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Together }
+\includegraphics[height=8cm,width=12cm]{hqdefault.jpg}
 \end{frame}
 
 \section{ Universals, programming against the interface and existentials}
@@ -400,7 +442,7 @@ provide the type T
 \end{itemize}
 \end{frame}
 
-\subsection{sounds like "L" in SOLID .. } 
+\subsection{it sounds like "L" in SOLID .. } 
 
 \begin{frame}
 \inputminted[mathescape,
@@ -410,20 +452,7 @@ provide the type T
 
 \end{frame}
 
-\begin{frame}
-\cite{cw1}
-\begin{minipage}[t]{0.5\linewidth}
-\begin{varblock}[5.1cm]{ implementer}
-Know about the specific type $T$     
-\end{varblock}
-\end{minipage}
-\hfill%
-\begin{minipage}[t]{0.48\linewidth}
-\begin{varblock}[6cm]{ user}
-does not know about the specific type T, only about the interface
-\end{varblock}
-\end{minipage}
-\end{frame}
+
 
 \subsection{existentials} 
 
@@ -431,8 +460,12 @@ does not know about the specific type T, only about the interface
 \begin{frame}[fragile]
 \frametitle{Existentials}
 \begin{itemize} 
-\item Interfaces is OO abstraction.But relation not clear with Universals, although they seem to do related thing
-\item Functional is Mathematics ! So Abstraction in FP has to be mathematical and related to universals ! Universals definition
+\item \textbf{Interfaces} allows to abstract in object oriented programming
+\item Like \textbf{universals} types, it "hides" something, but what is the relation  ?
+\pause
+\item Functional is Mathematics ! Abstraction in FP \textbf{has} to have a precise definition related to universals ! 
+\pause
+\item Universals definition
   $$empty : \forall T . \,\left( \right) \rightarrow List<T> $$
    suggests "existentials" 
   \begin{align*}
@@ -467,14 +500,59 @@ does not know about the specific type T, only about the interface
 \end{frame}  
 
 \begin{frame}
-\inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{04-existentials.fs}
+\frametitle{duality}
+\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\pause
+
+
+\column{.45\textwidth} % Left column and width
+\begin{itemize}
+\item IEnumerable vs IObservable
+\item Universals vs Existentials
+\end{itemize}
+\column{.5\textwidth} % Right column and width
+are examples of applying \textbf{duality}
+\end{columns}
 \end{frame}
+
+
+
 \begin{frame}
-For an interface
+\frametitle{Erik Meijer -  he will reverse all your arrows }
+\begin{center}
+\includegraphics[height=8cm,width=10cm]{0.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Functional programming and duality 
+is old : we know it works }
+\begin{center}
+\includegraphics[height=8cm,width=10cm]{Radio_calisthenics_in_1930s.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{encoding in Fsharp}
+\inputminted[mathescape,fontsize=\footnotesize]{fsharp}{04-existentials.fs}
 \end{frame}
 
 
+\begin{frame}
+\frametitle{stack demo}
+\end{frame}
 
+\begin{frame}
+\frametitle{Existentials - References}
+\footnotesize{
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[Cardelli, 1987]{cw1} Luca Cardelli, Peter Wegner (1985)
+\newblock On Understanding Types, Data Abstraction, and Polymorphism
+\bibitem[Cook, 2004?]{cook1} William Cook (2009)
+\newblock On Understanding Data Abstraction, Revisited
+\end{thebibliography}
+}
+\end{frame}
 \section{Prototyping the functional way}
 
 % value computing versus place computing - thinking about the problem, not the technicalities
@@ -518,7 +596,7 @@ or...
 \end{frame}
 
 \begin{frame}
-\frametitle{スパ lambda man ! }
+\frametitle{ lambda man ! }
 \includegraphics[height=8cm,width=12cm]{lambda-man.jpg}
 \end{frame}
 
@@ -537,11 +615,9 @@ or...
 \end{varblock}
 \end{minipage}
 
-\pause
-
 \end{frame}
 \begin{frame}
-\begin{varblock}{ parser return type - first try}
+\begin{varblock}[10cm]{ parser return type - first try}
 \inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectype.fs}
 \end{varblock}
 
@@ -560,20 +636,20 @@ or...
 Ok, but........ "9.12 " : 
 \begin{itemize}
 \item 9 is a number.. but if we recognize "9" as 9 only, what do we do for ".12" ?
-\item $\implies $ the return of a parser depends also on the rest of the string
+\item $\implies $ the result of a parser depends also on the rest of the string
 \end{itemize}
 If it matters, it should be part of the returned type of a parser  !
 \end{frame}
 \begin{frame}
-\begin{varblock}{ parser return type}
+\begin{varblock}[10cm]{ parser return type}
 \inputminted[mathescape,numbersep=5pt,fontsize=\footnotesize]{fsharp}{06-parsectypecomplete.fs}
 \end{varblock}
-
+e.g. "9.12 " 
 \begin{varblock}{ reading the parser type}
 
 \begin{itemize} 
-\item If this is a success, then here is the value along with the rest
-\item The notion of what is the "rest" is \textbf{dependent} on the $Val$ produced
+\item Each success contains a recognized value \textbf{along with} the "rest"
+\item Because the notion of what is the "rest" is \textbf{dependent} on the $Val$ produced
 \item $ParseReturn$ now contains a coherent and actionable unit of information
 \end{itemize}
 \end{varblock}
@@ -582,18 +658,10 @@ If it matters, it should be part of the returned type of a parser  !
 \begin{frame}
 \frametitle{demo time}
 \end{frame}
-
-
 \begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Cardelli, 1987]{cw1} Luca Cardelli, Peter Wegner (1985)
-\newblock On Understanding Types, Data Abstraction, and Polymorphism
-\end{thebibliography}
-}
+\frametitle{There are many more tricks to practice}
+\includegraphics[height=8cm,width=10cm]{radiotaiso1a.jpg}
 \end{frame}
-
 
 \begin{frame}
 \Huge{\centerline{The End}}

@@ -64,7 +64,6 @@ let one  ph  toks =
 let rec repeat0plus ph toks = ((ph .--.  repeat0plus ph >> List.Cons) |-| empty  ) toks;
 let rec repeat1plus ph toks = ((ph .--.  repeat0plus ph >> List.Cons) |-| one ph ) toks;
 
-let a = "[a number is like 1234 but can also be 9.12 ]"
  
 let letter (tokens:char list) =    
   match tokens with
@@ -85,20 +84,41 @@ let isChar cMatch (tokens:char list) =
    | _ -> Failure (sprintf "%A expected" cMatch)
 
 let toString (e:char list) = System.String(e |> List.toArray)
-
-let string toks = (repeat1plus letter >> toString >> Val.String) toks 
-
-let toInt (intList:int list) = List.fold (fun s e -> s*10+e) 0 (intList |> List.rev)
-let integer toks = (repeat1plus digit >> toInt >> Val.NumberI )toks 
-
+let toInt (intList:int list) = List.fold (fun s e -> s*10+e) 0 intList
 let toFloat (leftList, rightList) = 
     let numDigits x = floor (log10 x + 1.0)
     let integralPart = float(toInt leftList)
     let decimalPart  = float(toInt rightList)
     integralPart +  decimalPart / 10.**(numDigits decimalPart)
 
-let float toks = 
+
+
+let pString =  repeat1plus letter >> toString >> Val.String  
+let pInteger = repeat1plus digit >> toInt >> Val.NumberI  
+let pFloat toks = 
     let aDot = isChar '.'
     (repeat1plus digit .-- aDot  .--. repeat1plus digit  >> toFloat >> Val.NumberF )toks 
 
+let pSpaces  = repeat0plus (isChar ' ')
+
+let explode (s:string) = s.ToCharArray() |> Array.toList
+
+//test
+let floatvalue = pFloat   (explode "199.12")
+let intValue   = pInteger (explode "9.12"  )
+let intValue2  = pInteger (explode "912"   )
+ 
+let rec finalParser toks = 
+    (pSpaces --. 
+        (pFloat |-| pInteger |-| pString |-| pList finalParser) 
+        .-- pSpaces) toks
+and pList pars toks = 
+    let pOpenPar  = isChar '[' .-- pSpaces
+    let pClosePar = isChar ']' .-- pSpaces
+    (pOpenPar  --. (repeat0plus pars >> List)  .--  pClosePar ) toks 
+
+
+let r = finalParser (explode "[a number is like 1234 but can also be 9.12 ]")
+let d = finalParser (explode "[a number is like [ 12 but can also be 9.12 ] or 1293.0892 ]")
+ 
 

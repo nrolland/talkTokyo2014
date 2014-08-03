@@ -6,6 +6,7 @@ module converge =
            push    : (int *'Rep) -> 'Rep
            pop     :'Rep -> 'Rep
            top     :'Rep ->  int
+           merge  : 'Rep -> 'Rep -> 'Rep
         }
 
     // ∃ 't. Stack<'t>
@@ -42,23 +43,33 @@ module converge =
                         with member __.Apply<'Rep>(d:Stack<'Rep>) = 
                                d.getOps.top(d.witness)  } 
 
-    let listOps =  { empty = List.empty;isEmpty = List.isEmpty;push = List.Cons;pop = List.tail;top = List.head  } 
+    //LIST based implementation
+    let listOps =  
+        { empty = List.empty
+          isEmpty = List.isEmpty
+          push = List.Cons
+          pop = List.tail
+          top = List.head  } 
+
     let listStack  = new Stack<List<int>>(List.empty,listOps)  :> ExistentialStack
 
-    let arOps =  { empty = (Array.init 100 id,-1) ;
-                   isEmpty =  fun (ar,i) -> i = -1 ;
-                   push = fun (e,(ar,i)) -> ar.[i+1] <- e
-                                            (ar,i+1);
-                   pop = fun ((ar,i)) -> (ar,i-1);
-                   top = fun ((ar,i)) -> ar.[i]  } 
-    let arStack  = new Stack<_>(arOps.empty,arOps) :> ExistentialStack
-       
     let listStack1  = ExStack.push listStack  1  
     let listStack2  = ExStack.push listStack1 2  
     let el2         = ExStack.top listStack2
     let el1         = ExStack.top listStack1
     let listStack3  = ExStack.pop listStack2  
     let el3         = ExStack.top listStack3  
+
+    //ARRAY based implementation
+    let arOps =  { empty = (Array.init 100 id,-1) ;
+                   isEmpty =  fun (ar,i) -> i = -1 ;
+                   push = fun (e,(ar,i)) -> ar.[i+1] <- e
+                                            (ar,i+1);
+                   pop = fun ((ar,i)) -> (ar,i-1);
+                   top = fun ((ar,i)) -> ar.[i]  
+                   merge  } 
+    let arStack  = new Stack<_>(arOps.empty,arOps) :> ExistentialStack
+       
 
     let arStack1    = ExStack.push arStack  1  
     let arStack2    = ExStack.push arStack1 2  
